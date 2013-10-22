@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Hotdrop</string>
+    <string name="action_settings">Settings</string>
+    <string name="action_feed">Discover drops</string>
+    <string name="action_back">Back</string>
+    <string name="action_post">Leave a drop</string>
+     <string name="action_submit">submit</string>
+    <string name="note_hint">Add a note...\n\n</string>
+    <string name="empty_state_header">Dead spot.</string>
+    <string name="empty_state_msg">Be the first to leave a hotdrop here.</string>
+    
+    <string name="button_photo">Snap a photo</string>
+    <string name="button_video">Shoot a video</string>
+    <string name="button_upload">Upload media</string>
+    
+    <string name="hello_world">Hello world!</string>
+    <string name="hint">Leave a note...</string>
+	<string name="example_card_note">lalalalalal I am text</string>
+	<string name="example_time_stamp">2 days ago</string>
+    <string name="example_score">+42</string>
+       
+</resources>

@@ -1,0 +1,46 @@
+<resources>
+
+    <!--
+        Base application theme, dependent on API level. This theme is replaced
+        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
+    -->
+    <style name="AppTheme" parent="android:Theme.Holo">
+             <item name="android:actionBarStyle">@style/ActionBarStyle</item>
+    		 <item name="android:textColor">@color/gray</item>  
+    </style>
+
+    <!-- ActionBar styles -->
+    <style name="ActionBarStyle" parent="@android:style/Widget.Holo.ActionBar">
+        <item name="android:background">@color/red</item>
+        <item name="android:color">@color/white</item>
+        <item name="android:textSize">22sp</item>
+  </style>
+  
+    <!--  Card Styles -->
+    <style name="CardBase" parent="AppTheme">
+            <item name="android:layout_width">fill_parent</item>
+            <item name="android:layout_height">fill_parent</item>
+            <item name="android:background">@color/white</item>
+            <item name="android:orientation">vertical</item>
+            <item name="android:padding">@dimen/marginMain</item>
+            <item name="android:paddingBottom">@dimen/marginSmall</item>
+    </style>
+    
+    <!--  Text Styles -->
+    <style name="RobotoLight" parent="AppTheme">
+        <item name="android:fontFamily">sans-serif-light</item> 
+    </style>
+    
+   	<style name="TextMedium" parent="RobotoLight">
+		<item name="android:textSize">18sp</item> 
+    </style>
+    
+   	<style name="TextMicro" parent="RobotoLight">
+		<item name="android:textSize">12sp</item>
+    </style>
+    
+    <style name="BlueText" parent="TextMicro">
+    	<item name="android:textColor">@color/blue</item>
+    </style>
+    
+</resources>

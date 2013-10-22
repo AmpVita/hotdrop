@@ -1,0 +1,53 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/grayLight"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:id="@+id/post"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <com.gethotdrop.android.FitToWidthView
+            android:id="@+id/postImage"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:src="@drawable/placeholderimage"
+            android:visibility="gone" />
+
+        <EditText
+            android:id="@+id/postNote"
+            style="@style/TextMedium"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/marginMain"
+            android:background="@color/white"
+            android:hint="@string/hint"
+            android:padding="@dimen/marginMain"
+            android:textCursorDrawable="@null"
+            android:textSize="18sp" >
+
+            <requestFocus />
+        </EditText>
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/list"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@id/post"
+        android:layout_marginLeft="@dimen/marginMain"
+        android:layout_marginRight="@dimen/marginMain"
+        android:clipToPadding="false"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="@dimen/marginMain" >
+    </ListView>
+
+</RelativeLayout><!-- android:paddingLeft="@dimen/feed_padding" -->
+<!-- android:paddingRight="@dimen/feed_padding" -->
+<!-- android:dividerHeight="@dimen/list_divider_height" -->
+<!-- android:paddingBottom="@dimen/list_bottom_padding" -->
+<!-- android:paddingTop="@dimen/list_padding" -->

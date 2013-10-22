@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+     <color name="red">#ff6666</color>
+     <color name="blue">#5acdff</color>
+     <color name="yellow">#ffe35a</color>
+     <color name="orange">#ff9d5a</color>
+     <color name="grayLight">#e6e6e6</color>
+     <color name="grayLighter">#f2f2f2</color>
+     <color name="gray">#999999</color>
+     <color name="grayDark">#666666</color>
+     <color name="white">#ffffff</color>
+     <color name="pressed_actionbartheme">#CC5ACDFF</color>
+</resources>
