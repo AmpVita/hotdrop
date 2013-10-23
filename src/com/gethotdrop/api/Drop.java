@@ -27,6 +27,14 @@ public class Drop {
                 this.updatedAt = updatedAt;
         }
         
+        public Drop(String message) {
+        	this.message = message;
+        }
+        
+        public Drop(Bitmap image) {
+        	this.image = image;
+        }
+        
         public Drop(String message, Bitmap image) {
         	this.message = message;
         	this.image = image;

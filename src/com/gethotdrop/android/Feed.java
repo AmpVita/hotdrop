@@ -1,6 +1,5 @@
 package com.gethotdrop.android;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.gethotdrop.hotdrop.R;
@@ -17,21 +16,17 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnFocusChangeListener;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 
@@ -44,19 +39,10 @@ public class Feed extends Activity {
 	FitToWidthView postImage;
 	Bitmap chosenImage;
 
-	public int dpToPx(int dp) {
-		DisplayMetrics displayMetrics = getBaseContext().getResources()
-				.getDisplayMetrics();
-		int px = Math.round(dp
-				* (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
-		return px;
-	}
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_feed);
-		Log.e("feed", "ok");
 
 		drops = SyncService.getDrops();
 		startService(new Intent(this, SyncService.class));
@@ -84,11 +70,22 @@ public class Feed extends Activity {
 			@Override
 			public void onClick(View v) {
 				noteText = postNote.getText().toString();
-				Drop newDrop = new Drop(noteText, chosenImage);
+				Drop newDrop;
+				if (chosenImage != null && !(noteText.equals(""))) {
+					newDrop = new Drop(noteText, chosenImage);
+				} else if (!(noteText.equals(""))) {
+					newDrop = new Drop(noteText);		
+				} else if (postImage != null) {
+					newDrop = new Drop(chosenImage);		
+				} else {
+					return;
+				}
 				drops.add(newDrop);
 				adapter.notifyDataSetChanged();
-
+					
 				postNote.setText("");
+				chosenImage = null;
+				
 				postImage.setVisibility(View.GONE);
 			}
 		});
