@@ -41,6 +41,7 @@ public class Feed extends Activity {
 	Bitmap chosenImage = null;
 	EditText postNote = null;
 	Uri imageUri;
+	InputMethodManager imm;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +61,7 @@ public class Feed extends Activity {
 		postNote = (EditText) findViewById(R.id.postNote);
 		
 		//Set-up listener for what is selected
-		final InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+		imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 		
 		//Create layout that wraps buttons buttons
 		final RelativeLayout postButtons = (RelativeLayout) findViewById(R.id.postButtons);
@@ -187,6 +188,7 @@ public class Feed extends Activity {
 	                      } catch (Exception e) {
 	                        e.printStackTrace();
 	                    }
+				        imm.hideSoftInputFromWindow(list.getWindowToken(), 0);
 			}
 			break;
 
