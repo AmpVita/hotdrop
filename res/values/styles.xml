@@ -7,6 +7,7 @@
     <style name="AppTheme" parent="android:Theme.Holo">
              <item name="android:actionBarStyle">@style/ActionBarStyle</item>
     		 <item name="android:textColor">@color/gray</item>  
+<!--              <item name="android:background">@color/gray</item> -->
     </style>
 
     <!-- ActionBar styles -->
@@ -24,6 +25,14 @@
             <item name="android:orientation">vertical</item>
             <item name="android:padding">@dimen/marginMain</item>
             <item name="android:paddingBottom">@dimen/marginSmall</item>
+    </style>
+    
+    <!--  Button Styles -->
+    <style name="ButtonStyle" parent="AppTheme">
+            <item name="android:layout_width">wrap_content</item>
+            <item name="android:layout_height">wrap_content</item>
+            <item name="android:background">@android:color/transparent</item>
+            <item name="android:padding">@dimen/marginMain</item>
     </style>
     
     <!--  Text Styles -->

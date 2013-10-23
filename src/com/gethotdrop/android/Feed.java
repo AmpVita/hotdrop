@@ -5,19 +5,27 @@ import java.util.List;
 
 
 import com.gethotdrop.hotdrop.R;
-import com.gethotdrop.service.SyncService;
+//import com.gethotdrop.service.SyncService;
 import com.gethotdrop.api.*;
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.View.OnFocusChangeListener;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 
 public class Feed extends Activity {
 	DropAdapter adapter;
@@ -38,31 +46,55 @@ public class Feed extends Activity {
 		setContentView(R.layout.activity_feed);
 	 	Log.e("feed", "ok");
 
-		drops = SyncService.getDrops();
-        startService(new Intent(this, SyncService.class));
+		//drops = SyncService.getDrops();
+        //startService(new Intent(this, SyncService.class));
 
+	 	drops = new ArrayList<Drop>();
+	 	drops.add(new Drop("hey there")); 
+	 	drops.add(new Drop("hey there1"));
+	 	drops.add(new Drop("hey there2"));
+	 	
 		adapter = new DropAdapter(this, R.layout.card, drops);
-
+		list = (ListView) findViewById(R.id.list);
 		
-        
-        list = (ListView) findViewById(R.id.list);
+		final InputMethodManager imm = (InputMethodManager)getSystemService(
+			      Context.INPUT_METHOD_SERVICE);
+		final RelativeLayout postButtons = (RelativeLayout)findViewById(R.id.postButtons);
+		final EditText postNote = (EditText)findViewById(R.id.postNote);
+		postNote.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				postButtons.setBackgroundResource(R.color.blue); 
+			}
+		});
+		
+        list.setOnItemClickListener(new OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+					long arg3) {
+				imm.hideSoftInputFromWindow(list.getWindowToken(), 0);
+				postButtons.setBackgroundResource(R.color.grayLight); 
+			}
+		});
 		list.setOverScrollMode(ListView.OVER_SCROLL_ALWAYS);
 		list.setOnScrollListener(new OnScrollListener() {
 			@Override
-			public void onScrollStateChanged(AbsListView view, int scrollState) {
+			public void onScrollStateChanged(AbsListView view, int scrollState) {	
+				imm.hideSoftInputFromWindow(list.getWindowToken(), 0);
+				postButtons.setBackgroundResource(R.color.grayLight); 
 			}
 
 			@Override
 			public void onScroll(AbsListView view, int firstVisibleItem,
 					int visibleItemCount, int totalItemCount) {
 
-				LinearLayout post = (LinearLayout) findViewById(R.id.post);
+				RelativeLayout postButtons = (RelativeLayout) findViewById(R.id.postButtons);
 				if (visibleItemCount > 0) {
 					View firstView = view.getChildAt(0);
 					if ((firstVisibleItem == 0) && (firstView.getTop() >= 0)) {
-						post.setVisibility(View.VISIBLE);
+						postButtons.setVisibility(View.VISIBLE);
 					} else {
-						post.setVisibility(View.GONE);
+						//postButtons.setVisibility(View.GONE);
 					}
 				}
 			}

@@ -1,13 +1,14 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@color/grayLight"
+    android:background="@color/grayLighter"
     android:orientation="vertical" >
 
     <LinearLayout
-        android:id="@+id/post"
+        android:id="@+id/postHolder"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="@dimen/marginMain"
         android:orientation="vertical" >
 
         <com.gethotdrop.android.FitToWidthView
@@ -23,7 +24,6 @@
             style="@style/TextMedium"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/marginMain"
             android:background="@color/white"
             android:hint="@string/hint"
             android:padding="@dimen/marginMain"
@@ -34,29 +34,29 @@
         </EditText>
 
         <RelativeLayout
+        	android:id="@+id/postButtons"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
+            android:layout_height="wrap_content"
+            android:background="@color/blue" >
 
             <ImageButton
                 android:id="@+id/cameraButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/camera" />
+         		style="@style/ButtonStyle"
+                android:src="@drawable/ic_action_camera"
+                android:drawable="@color/whiteOpaque" android:state_pressed="true"/>
 
             <ImageButton
                 android:id="@+id/uploadButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/upload"
+         		style="@style/ButtonStyle"
+                android:src="@drawable/ic_action_picture"
                 android:layout_toRightOf="@id/cameraButton" />
 
             <ImageButton
                 android:id="@+id/postButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                style="@style/ButtonStyle"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentRight="true"
-                android:src="@drawable/post" />
+                android:src="@drawable/ic_action_accept" />
 
         </RelativeLayout>
 
@@ -66,7 +66,7 @@
         android:id="@+id/list"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_below="@id/post"
+        android:layout_below="@id/postHolder"
         android:layout_marginLeft="@dimen/marginMain"
         android:layout_marginRight="@dimen/marginMain"
         android:clipToPadding="false"

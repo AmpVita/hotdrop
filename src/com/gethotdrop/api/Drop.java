@@ -25,6 +25,10 @@ public class Drop {
                 this.updatedAt = updatedAt;
         }
         
+        public Drop(String message) {
+        	this.message = message;
+        }
+        
         public int getId() {
                 return id;
         }
