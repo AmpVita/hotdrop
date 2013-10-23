@@ -17,7 +17,8 @@
             android:layout_height="wrap_content"
             android:background="@color/white"
             android:src="@drawable/placeholderimage"
-            android:visibility="gone" />
+            android:visibility="gone"
+            android:scaleType="centerInside" />
 
         <EditText
             android:id="@+id/postNote"

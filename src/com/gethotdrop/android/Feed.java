@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -35,79 +36,45 @@ public class Feed extends Activity {
 	ListView list;
 	List<Drop> drops;
 
-	String noteText;
-	FitToWidthView postImage;
-	Bitmap chosenImage;
-
+	String noteText = null;
+	FitToWidthView postImage = null;
+	Bitmap chosenImage = null;
+	EditText postNote = null;
+	Uri imageUri;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_feed);
 
+		//Get drops and start service
 		drops = SyncService.getDrops();
 		startService(new Intent(this, SyncService.class));
 
+		//Create DropAdapter / ListView
 		adapter = new DropAdapter(this, R.layout.card, drops);
 		list = (ListView) findViewById(R.id.list);
+		
+		//Create view for image / edittext for note
 		postImage = (FitToWidthView) findViewById(R.id.postImage);
-
+		postNote = (EditText) findViewById(R.id.postNote);
+		
+		//Set-up listener for what is selected
 		final InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+		
+		//Create layout that wraps buttons buttons
 		final RelativeLayout postButtons = (RelativeLayout) findViewById(R.id.postButtons);
-		final EditText postNote = (EditText) findViewById(R.id.postNote);
-
+		
+		//START LISTENER FOR NOTE EDITTEXT
 		postNote.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				postButtons.setBackgroundResource(R.color.blue);
 			}
 		});
-
-		final ImageButton postButton = (ImageButton) findViewById(R.id.postButton);
-		final ImageButton uploadButton = (ImageButton) findViewById(R.id.uploadButton);
-		final ImageButton cameraButton = (ImageButton) findViewById(R.id.cameraButton);
-
-		postButton.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				noteText = postNote.getText().toString();
-				Drop newDrop;
-				if (chosenImage != null && !(noteText.equals(""))) {
-					newDrop = new Drop(noteText, chosenImage);
-				} else if (!(noteText.equals(""))) {
-					newDrop = new Drop(noteText);		
-				} else if (postImage != null) {
-					newDrop = new Drop(chosenImage);		
-				} else {
-					return;
-				}
-				drops.add(newDrop);
-				adapter.notifyDataSetChanged();
-					
-				postNote.setText("");
-				chosenImage = null;
-				
-				postImage.setVisibility(View.GONE);
-			}
-		});
-
-		uploadButton.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
-				photoPickerIntent.setType("image/*");
-				startActivityForResult(photoPickerIntent, 1);
-			}
-		});
-
-		cameraButton.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
-				startActivityForResult(intent, 0);
-			}
-		});
-
-		// list setup
+		//END LISTENER FOR NOTE EDITTEXT
+		
+		//START LIST CONFIGURATION
 		list.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
@@ -140,15 +107,72 @@ public class Feed extends Activity {
 			}
 		});
 		list.setAdapter(adapter);
-	}
+		//END LIST CONFIGURATION
+		
+		//START BUTTON LISTENERS		
+		final ImageButton postButton = (ImageButton) findViewById(R.id.postButton);
+		final ImageButton uploadButton = (ImageButton) findViewById(R.id.uploadButton);
+		final ImageButton cameraButton = (ImageButton) findViewById(R.id.cameraButton);
 
+		postButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				noteText = postNote.getText().toString();
+				Drop newDrop;
+				if (chosenImage != null && !(noteText.equals(""))) {
+					list = (ListView) findViewById(R.id.list);
+					newDrop = new Drop(noteText, chosenImage);
+				} else if (!(noteText.equals(""))) {
+					newDrop = new Drop(noteText);		
+				} else if (chosenImage != null && noteText.equals("")) {
+					newDrop = new Drop(chosenImage);		
+				} else {
+					return;
+				}
+				
+				drops.add(0, newDrop);
+				adapter.notifyDataSetChanged();
+					
+				postNote.setText("");
+				chosenImage = null;
+				
+				postImage.setVisibility(View.GONE);
+			}
+		});
+
+		uploadButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+				photoPickerIntent.setType("image/*");
+				startActivityForResult(photoPickerIntent, 1);
+			}
+		});
+
+		cameraButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+		           ContentValues values = new ContentValues();
+		            values.put(MediaStore.Images.Media.TITLE, "New Picture");
+		            values.put(MediaStore.Images.Media.DESCRIPTION, "From your Camera");
+		            imageUri = getContentResolver().insert(
+		                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+		            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+		            intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+		            startActivityForResult(intent, 0);
+			}
+		});
+		//END BUTTON LISTENERS		
+	}
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.feed, menu);
 		return true;
-	}
-
+	} 
+	
+	//Handles results for camera and image upload intents
 	@Override
 	public void onActivityResult(int requestCode, int resultCode,
 			Intent buttonIntent) {
@@ -156,7 +180,13 @@ public class Feed extends Activity {
 		switch (requestCode) {
 		case 0:
 			if (resultCode == Activity.RESULT_OK) {
-				chosenImage = (Bitmap) buttonIntent.getExtras().get("data");
+				        try {
+	                        Bitmap thumbnail = MediaStore.Images.Media.getBitmap(
+	                                getContentResolver(), imageUri);
+	        				chosenImage = (Bitmap) thumbnail;
+	                      } catch (Exception e) {
+	                        e.printStackTrace();
+	                    }
 			}
 			break;
 
@@ -179,9 +209,8 @@ public class Feed extends Activity {
 			}
 			break;
 		}
-		postImage = (FitToWidthView) findViewById(R.id.postImage);
 		postImage.setImageBitmap(chosenImage);
 		postImage.setVisibility(View.VISIBLE);
 	}
-
+	
 }
