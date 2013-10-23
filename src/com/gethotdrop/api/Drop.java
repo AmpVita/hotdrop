@@ -2,6 +2,7 @@ package com.gethotdrop.api;
 
 import java.util.Date;
 
+import android.graphics.Bitmap;
 import android.location.Location;
 import android.location.LocationManager;
 
@@ -12,6 +13,7 @@ public class Drop {
         private double latitude;
         private double longitude;
         public String message;
+        public Bitmap image;
         private Date createdAt;
         private Date updatedAt;
         
@@ -25,11 +27,20 @@ public class Drop {
                 this.updatedAt = updatedAt;
         }
         
-        public Drop(String message) {
+        public Drop(String message, Bitmap image) {
         	this.message = message;
+        	this.image = image;
         }
         
-        public int getId() {
+        public Bitmap getImage() {
+			return image;
+		}
+
+		public void setImage(Bitmap image) {
+			this.image = image;
+		}
+
+		public int getId() {
                 return id;
         }
         

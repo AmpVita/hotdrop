@@ -19,8 +19,8 @@ import android.view.View;
 public class SyncService extends Service implements
 GooglePlayServicesClient.ConnectionCallbacks,
 GooglePlayServicesClient.OnConnectionFailedListener{
-	private static List<Drop> drops;
-	private LocationClient lClient;
+	public static List<Drop> drops;
+	public LocationClient lClient;
 	public static List<Drop> getDrops() {
 		if (drops == null) {
 			drops = new ArrayList<Drop>();
