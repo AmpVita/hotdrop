@@ -206,7 +206,10 @@ public class Feed extends Activity {
 					String filePath = cursor.getString(columnIndex);
 					cursor.close();
 
-					chosenImage = BitmapFactory.decodeFile(filePath);
+					BitmapFactory.Options optsDownSample = new BitmapFactory.Options();
+					optsDownSample.inSampleSize = 8;
+
+					chosenImage = BitmapFactory.decodeFile(filePath, optsDownSample);
 				}
 			}
 			break;
