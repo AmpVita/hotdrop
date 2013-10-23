@@ -21,6 +21,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.animation.TranslateAnimation;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
@@ -95,13 +96,12 @@ public class Feed extends Activity {
 			@Override
 			public void onScroll(AbsListView view, int firstVisibleItem,
 					int visibleItemCount, int totalItemCount) {
-
-				RelativeLayout postButtons = (RelativeLayout) findViewById(R.id.postButtons);
 				if (visibleItemCount > 0) {
 					View firstView = view.getChildAt(0);
 					if ((firstVisibleItem == 0) && (firstView.getTop() >= 0)) {
 						postButtons.setVisibility(View.VISIBLE);
 					} else {
+						//slideToTop(postButtons);
 						postButtons.setVisibility(View.GONE);
 					}
 				}
@@ -153,18 +153,39 @@ public class Feed extends Activity {
 		cameraButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-		           ContentValues values = new ContentValues();
-		            values.put(MediaStore.Images.Media.TITLE, "New Picture");
-		            values.put(MediaStore.Images.Media.DESCRIPTION, "From your Camera");
-		            imageUri = getContentResolver().insert(
-		                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
-		            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-		            intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
-		            startActivityForResult(intent, 0);
+				 Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
+                 startActivityForResult(intent, 0);   
+//				
+//				ContentValues values = new ContentValues();
+//		            values.put(MediaStore.Images.Media.TITLE, "New Picture");
+//		            values.put(MediaStore.Images.Media.DESCRIPTION, "From your Camera");
+//		            imageUri = getContentResolver().insert(
+//		                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+//		            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//		            intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+//		            startActivityForResult(intent, 0);
 			}
 		});
 		//END BUTTON LISTENERS		
 	}
+	
+//	// To animate view slide out from bottom to top
+//	public void slideToTop(View view){
+//	TranslateAnimation animate = new TranslateAnimation(0,0,0,-view.getHeight());
+//	animate.setDuration(500);
+//	animate.setFillAfter(true);
+//	view.startAnimation(animate);
+//	view.setVisibility(View.GONE);
+//	}
+//	
+//	// To animate view slide out from top to bottom
+//	public void slideToBottom(View view){
+//	TranslateAnimation animate = new TranslateAnimation(0,0,0,view.getHeight());
+//	animate.setDuration(500);
+//	animate.setFillAfter(true);
+//	view.startAnimation(animate);
+//	view.setVisibility(View.VISIBLE);
+//	}
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -181,14 +202,16 @@ public class Feed extends Activity {
 		switch (requestCode) {
 		case 0:
 			if (resultCode == Activity.RESULT_OK) {
-				        try {
-	                        Bitmap thumbnail = MediaStore.Images.Media.getBitmap(
-	                                getContentResolver(), imageUri);
-	        				chosenImage = (Bitmap) thumbnail;
-	                      } catch (Exception e) {
-	                        e.printStackTrace();
-	                    }
-				        imm.hideSoftInputFromWindow(list.getWindowToken(), 0);
+		        chosenImage = (Bitmap) buttonIntent.getExtras().get("data");
+                				
+//				try {
+//	                        Bitmap thumbnail = MediaStore.Images.Media.getBitmap(
+//	                                getContentResolver(), imageUri);
+//	        				chosenImage = (Bitmap) thumbnail;
+//	                      } catch (Exception e) {
+//	                        e.printStackTrace();
+//	                    }
+//				        imm.hideSoftInputFromWindow(list.getWindowToken(), 0);
 			}
 			break;
 
