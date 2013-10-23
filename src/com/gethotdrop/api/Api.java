@@ -1,4 +1,4 @@
-package com.gethotdrop.android.core;
+package com.gethotdrop.api;
 
 import java.io.BufferedReader;
 import java.io.IOException;

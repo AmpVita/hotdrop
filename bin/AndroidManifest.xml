@@ -3,7 +3,7 @@
     package="com.gethotdrop.hotdrop"
     android:versionCode="1"
     android:versionName="1.0" >
-
+	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-sdk
         android:minSdkVersion="16"
         android:targetSdkVersion="18" />
@@ -22,6 +22,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <service
+            android:name="com.gethotdrop.service.SyncService"
+            android:label="Hotdrop COMM" >
+        </service>
     </application>
 
 </manifest>

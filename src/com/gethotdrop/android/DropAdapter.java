@@ -2,6 +2,7 @@ package com.gethotdrop.android;
 
 import java.util.List;
 
+import com.gethotdrop.api.Drop;
 import com.gethotdrop.hotdrop.R;
 
 import android.app.Activity;
@@ -48,7 +49,7 @@ public class DropAdapter extends ArrayAdapter<Drop> {
 
        Drop thisDrop = data.get(position);
 
-       holder.note.setText(thisDrop.note);
+       holder.note.setText(thisDrop.getMessage());
        //holder.ups.setText("!");
        //holder.timestamp.setText(thisDrop.getCreatedAt().toString());
        //int outImage=R.drawable.ic_camera;
