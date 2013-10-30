@@ -67,6 +67,7 @@ public class SyncService extends Service implements
 		Log.e(unit, "setFreq");
 		Intent sIntent = new Intent(this, LocationWorker.class);
 		PendingIntent lWorker = PendingIntent.getService(this, 0, sIntent, 0);
+
 		
 		lClient.requestLocationUpdates(lRequest, lWorker);
 
