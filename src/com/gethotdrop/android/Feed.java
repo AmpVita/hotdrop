@@ -2,22 +2,15 @@ package com.gethotdrop.android;
 
 import java.util.List;
 
-import com.gethotdrop.hotdrop.R;
-import com.gethotdrop.service.SyncService;
-//import com.gethotdrop.service.SyncService;
-import com.gethotdrop.api.*;
-
-import android.net.Uri;
-import android.os.Bundle;
-import android.provider.MediaStore;
 import android.app.Activity;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.util.Log;
+import android.net.Uri;
+import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -33,6 +26,11 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+
+import com.gethotdrop.api.Drop;
+import com.gethotdrop.hotdrop.R;
+import com.gethotdrop.service.SyncService;
+//import com.gethotdrop.service.SyncService;
 
 public class Feed extends Activity {
 	DropAdapter adapter;
