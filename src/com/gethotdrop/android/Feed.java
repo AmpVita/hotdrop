@@ -2,18 +2,27 @@ package com.gethotdrop.android;
 
 import java.util.List;
 
+import com.gethotdrop.hotdrop.R;
+import com.gethotdrop.service.SyncService;
+//import com.gethotdrop.service.SyncService;
+import com.gethotdrop.api.*;
+
+import android.net.Uri;
+import android.os.Bundle;
+import android.provider.MediaStore;
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
-import android.os.Bundle;
-import android.provider.MediaStore;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.animation.Animation;
+import android.view.animation.Animation.AnimationListener;
 import android.view.animation.TranslateAnimation;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsListView;
@@ -24,11 +33,6 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
-
-import com.gethotdrop.api.Drop;
-import com.gethotdrop.hotdrop.R;
-import com.gethotdrop.service.SyncService;
-//import com.gethotdrop.service.SyncService;
 
 public class Feed extends Activity {
 	DropAdapter adapter;
@@ -41,6 +45,7 @@ public class Feed extends Activity {
 	EditText postNote = null;
 	Uri imageUri;
 	InputMethodManager imm;
+	RelativeLayout postButtons;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +68,7 @@ public class Feed extends Activity {
 		imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 		
 		//Create layout that wraps buttons buttons
-		final RelativeLayout postButtons = (RelativeLayout) findViewById(R.id.postButtons);
+		postButtons = (RelativeLayout) findViewById(R.id.postButtons);
 		
 		//START LISTENER FOR NOTE EDITTEXT
 		postNote.setOnClickListener(new OnClickListener() {
@@ -84,24 +89,28 @@ public class Feed extends Activity {
 			}
 		});
 		list.setOverScrollMode(ListView.OVER_SCROLL_ALWAYS);
+		
 		list.setOnScrollListener(new OnScrollListener() {
+			boolean atTop = true;
+			
 			@Override
 			public void onScrollStateChanged(AbsListView view, int scrollState) {
 				imm.hideSoftInputFromWindow(list.getWindowToken(), 0);
 				postButtons.setBackgroundResource(R.color.grayLight);
 			}
-
+ 
 			@Override
 			public void onScroll(AbsListView view, int firstVisibleItem,
 					int visibleItemCount, int totalItemCount) {
 				if (visibleItemCount > 0) {
 					View firstView = view.getChildAt(0);
-					if ((firstVisibleItem == 0) && (firstView.getTop() >= 0)) {
-						postButtons.setVisibility(View.VISIBLE);
-					} else {
-						//slideToTop(postButtons);
-						postButtons.setVisibility(View.GONE);
-					}
+					if ((firstVisibleItem == 0) && (firstView.getTop() >= 0) && !atTop) {
+						slideDown(postButtons);
+						atTop = true;
+					} else if (firstView.getTop() < 0){
+						slideUp(postButtons);
+						atTop = false;
+					} 
 				}
 			}
 		});
@@ -153,7 +162,8 @@ public class Feed extends Activity {
 			public void onClick(View v) {
 				 Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
                  startActivityForResult(intent, 0);   
-//				
+
+                 //Code snippet for better quality images				
 //				ContentValues values = new ContentValues();
 //		            values.put(MediaStore.Images.Media.TITLE, "New Picture");
 //		            values.put(MediaStore.Images.Media.DESCRIPTION, "From your Camera");
@@ -167,23 +177,31 @@ public class Feed extends Activity {
 		//END BUTTON LISTENERS		
 	}
 	
-//	// To animate view slide out from bottom to top
-//	public void slideToTop(View view){
-//	TranslateAnimation animate = new TranslateAnimation(0,0,0,-view.getHeight());
-//	animate.setDuration(500);
-//	animate.setFillAfter(true);
-//	view.startAnimation(animate);
-//	view.setVisibility(View.GONE);
-//	}
-//	
-//	// To animate view slide out from top to bottom
-//	public void slideToBottom(View view){
-//	TranslateAnimation animate = new TranslateAnimation(0,0,0,view.getHeight());
-//	animate.setDuration(500);
-//	animate.setFillAfter(true);
-//	view.startAnimation(animate);
-//	view.setVisibility(View.VISIBLE);
-//	}
+	// To animate view slide out from bottom to top
+	public void slideUp(View view){
+	findViewById(R.id.postNote).bringToFront();
+	TranslateAnimation animate = new TranslateAnimation(0,0,0,-view.getHeight());
+	animate.setDuration(500);
+	animate.setAnimationListener( new AnimationListener() {         
+		public void onAnimationEnd(Animation arg0) {postButtons.setVisibility(View.GONE);}
+		public void onAnimationRepeat(Animation arg0) {}
+		public void onAnimationStart(Animation arg0) {}
+	});
+	view.startAnimation(animate);
+	}
+	
+	// To animate view slide out from top to bottom
+	public void slideDown(View view){
+	findViewById(R.id.postNote).bringToFront();
+	TranslateAnimation animate = new TranslateAnimation(0,0,-view.getHeight(),0);
+	animate.setDuration(500);
+	animate.setAnimationListener( new AnimationListener() {         
+		public void onAnimationEnd(Animation arg0) {}
+		public void onAnimationRepeat(Animation arg0) {}
+		public void onAnimationStart(Animation arg0) {postButtons.setVisibility(View.VISIBLE);}
+	});
+	view.startAnimation(animate);
+	}
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
