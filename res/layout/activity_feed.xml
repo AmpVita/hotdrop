@@ -4,12 +4,11 @@
     android:background="@color/grayLighter"
     android:orientation="vertical" >
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/postHolder"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/marginMain"
-        android:orientation="vertical" >
+        android:layout_margin="@dimen/marginMain" >
 
         <com.gethotdrop.android.FitToWidthView
             android:id="@+id/postImage"
@@ -25,6 +24,7 @@
             style="@style/TextMedium"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@id/postImage"
             android:background="@color/white"
             android:hint="@string/hint"
             android:padding="@dimen/marginMain"
@@ -35,9 +35,10 @@
         </EditText>
 
         <RelativeLayout
-        	android:id="@+id/postButtons"
+            android:id="@+id/postButtons"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@id/postNote"
             android:background="@color/blue" >
 
             <ImageButton
@@ -61,7 +62,7 @@
 
         </RelativeLayout>
 
-    </LinearLayout>
+    </RelativeLayout>
 
     <ListView
         android:id="@+id/list"

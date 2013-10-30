@@ -54,13 +54,13 @@ GooglePlayServicesClient.OnConnectionFailedListener{
 	public void onConnected(Bundle arg0) {
 		Location loc = lClient.getLastLocation();
 		drops.add(new Drop(0, 0, 0, 0, loc.getLatitude() + " " + loc.getLongitude(), null, null));		
-//		drops.add(new Drop(0, 0, 0, 0, loc.getLatitude() + " " + loc.getLongitude(), null, null));		
-//		drops.add(new Drop(0, 0, 0, 0, loc.getLatitude() + " " + loc.getLongitude(), null, null));		
-//		drops.add(new Drop(0, 0, 0, 0, loc.getLatitude() + " " + loc.getLongitude(), null, null));		
-//		drops.add(new Drop(0, 0, 0, 0, loc.getLatitude() + " " + loc.getLongitude(), null, null));		
-//		drops.add(new Drop(0, 0, 0, 0, loc.getLatitude() + " " + loc.getLongitude(), null, null));		
-//		drops.add(new Drop(0, 0, 0, 0, loc.getLatitude() + " " + loc.getLongitude(), null, null));		
-//		drops.add(new Drop(0, 0, 0, 0, loc.getLatitude() + " " + loc.getLongitude(), null, null));		
+		drops.add(new Drop(0, 0, 0, 0, loc.getLatitude() + " " + loc.getLongitude(), null, null));		
+		drops.add(new Drop(0, 0, 0, 0, loc.getLatitude() + " " + loc.getLongitude(), null, null));		
+		drops.add(new Drop(0, 0, 0, 0, loc.getLatitude() + " " + loc.getLongitude(), null, null));		
+		drops.add(new Drop(0, 0, 0, 0, loc.getLatitude() + " " + loc.getLongitude(), null, null));		
+		drops.add(new Drop(0, 0, 0, 0, loc.getLatitude() + " " + loc.getLongitude(), null, null));		
+		drops.add(new Drop(0, 0, 0, 0, loc.getLatitude() + " " + loc.getLongitude(), null, null));		
+		drops.add(new Drop(0, 0, 0, 0, loc.getLatitude() + " " + loc.getLongitude(), null, null));		
 		
 	}
 	@Override
