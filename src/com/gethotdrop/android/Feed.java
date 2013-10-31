@@ -1,9 +1,14 @@
 package com.gethotdrop.android;
 
+import java.io.IOException;
 import java.util.List;
 
+import org.json.JSONException;
+
 import com.gethotdrop.hotdrop.R;
+import com.gethotdrop.service.DropStore;
 import com.gethotdrop.service.SyncService;
+import com.gethotdrop.service.Worker;
 //import com.gethotdrop.service.SyncService;
 import com.gethotdrop.api.*;
 
@@ -11,9 +16,11 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -35,7 +42,7 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 
 public class Feed extends Activity {
-	DropAdapter adapter;
+	public static DropAdapter adapter;
 	ListView list;
 	List<Drop> drops;
 
@@ -46,15 +53,22 @@ public class Feed extends Activity {
 	Uri imageUri;
 	InputMethodManager imm;
 	RelativeLayout postButtons;
+	private static Context c;
+	
+	
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_feed);
+		c = this;
+		
 
 		//Get drops and start service
-		drops = SyncService.getDrops();
 		startService(new Intent(this, SyncService.class));
+		DropStore dStore = DropStore.getDropStore(this);
+		drops = dStore.getDrops();
+		Log.e("Drops", "Number of is " + drops.size());
 
 		//Create DropAdapter / ListView
 		adapter = new DropAdapter(this, R.layout.card, drops);
@@ -114,6 +128,7 @@ public class Feed extends Activity {
 				}
 			}
 		});
+		Log.e("list count", "items" + adapter.getCount());
 		list.setAdapter(adapter);
 		//END LIST CONFIGURATION
 		
@@ -138,7 +153,12 @@ public class Feed extends Activity {
 					return;
 				}
 				
-				drops.add(0, newDrop);
+				/*Log.e("newdrop is", newDrop.message);
+				DropStore.addOutgoing(newDrop);
+				Intent i = new Intent(c, Worker.class);
+				i.putExtra("action", 2);
+                c.startService(i);*/
+				drops.add(newDrop);
 				adapter.notifyDataSetChanged();
 					
 				postNote.setText("");
