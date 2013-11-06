@@ -55,14 +55,11 @@ public class Feed extends Activity {
 	RelativeLayout postButtons;
 	private static Context c;
 	
-	
-	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_feed);
 		c = this;
-		
 
 		//Get drops and start service
 		startService(new Intent(this, SyncService.class));
@@ -71,6 +68,7 @@ public class Feed extends Activity {
 		Log.e("Drops", "Number of is " + drops.size());
 
 		//Create DropAdapter / ListView
+		//TODO: think about lifecycle of adapter and the app
 		adapter = new DropAdapter(this, R.layout.card, drops);
 		list = (ListView) findViewById(R.id.list);
 		
@@ -84,6 +82,7 @@ public class Feed extends Activity {
 		//Create layout that wraps buttons buttons
 		postButtons = (RelativeLayout) findViewById(R.id.postButtons);
 		
+		//TODO: think about listeners combining
 		//START LISTENER FOR NOTE EDITTEXT
 		postNote.setOnClickListener(new OnClickListener() {
 			@Override
@@ -129,7 +128,7 @@ public class Feed extends Activity {
 			}
 		});
 		Log.e("list count", "items" + adapter.getCount());
-		list.setAdapter(adapter);
+		list.setAdapter(adapter); // TODO: ADAPTER SET AT END OF LISTENER
 		//END LIST CONFIGURATION
 		
 		//START BUTTON LISTENERS		
@@ -221,7 +220,7 @@ public class Feed extends Activity {
 		public void onAnimationStart(Animation arg0) {postButtons.setVisibility(View.VISIBLE);}
 	});
 	view.startAnimation(animate);
-	}
+	} //TODO: think about creating separate animations file
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -275,6 +274,11 @@ public class Feed extends Activity {
 		}
 		postImage.setImageBitmap(chosenImage);
 		postImage.setVisibility(View.VISIBLE);
+	}
+	public static void updateDrops() {
+		if (adapter != null)
+		adapter.notifyDataSetChanged();
+		Log.d("adapter", "refresh");
 	}
 	
 }

@@ -83,7 +83,6 @@ public class Drop {
 		Location location = new Location(LocationManager.PASSIVE_PROVIDER);
 		location.setLatitude(latitude);
 		location.setLongitude(longitude);
-
 		return location;
 
 	}
@@ -92,9 +91,8 @@ public class Drop {
         	// Build a new Geofence object
             return new Geofence.Builder()
             	.setRequestId(String.valueOf(getId()))
-            	.setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER 
-            			| Geofence.GEOFENCE_TRANSITION_EXIT)
-            	.setCircularRegion(getLatitude(), getLongitude(), (float) DropStore.getRadius())
+            	.setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER)
+            	.setCircularRegion(getLatitude(), getLongitude(), (float) 40)
             	.setExpirationDuration(Geofence.NEVER_EXPIRE)
             	.build();
             	

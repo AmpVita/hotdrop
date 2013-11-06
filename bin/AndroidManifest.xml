@@ -33,6 +33,10 @@
             android:name="com.gethotdrop.service.SyncService"
             android:label="Hotdrop COMM" >
         </service>
+        <service
+            android:name="com.gethotdrop.service.Worker"
+            android:label="Hotdrop Worker" >
+        </service>
     </application>
 
 </manifest>
