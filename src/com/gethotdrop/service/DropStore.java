@@ -2,6 +2,9 @@ package com.gethotdrop.service;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -36,146 +39,114 @@ import com.google.android.gms.location.LocationClient.OnRemoveGeofencesResultLis
  */
 
 public class DropStore {
-	private ArrayList<Drop> outgoingQueue;
+	private ArrayList<Drop> drops;
 	private Api api;
-	private List<Drop> drops;
-	private Map<Integer, Drop> allDrops;
-	private LocationEventListener listener;
-	private PendingIntent pIntent;
-	public static DropStore store = null;
-	private static double radius;
+	private Map<Integer, Drop> activeDrops = new HashMap<Integer, Drop>();
+	private Map<Integer, Drop> allDrops = new HashMap<Integer, Drop>();
 
-	protected DropStore(Context c) {
-		
-		outgoingQueue = new ArrayList<Drop>();
-		drops = new ArrayList<Drop>();
-		api = new Api(UniqueIdentifier.id(c));
-		try {
-			radius = api.getRadius();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		Intent intent = new Intent(c, Worker.class);
-		// configure worker for geofence action
-		intent.putExtra("action", 1);
-		pIntent = PendingIntent.getService(c, 0, intent,
-				PendingIntent.FLAG_UPDATE_CURRENT);
-		listener = LocationEventListener.getListener(c);
+	private Map<Integer, Drop> newActiveDrops = new HashMap<Integer, Drop>();
+
+	private static DropStore instance = null;
+
+	protected DropStore(Context context) {
+		api = new Api(UniqueIdentifier.id(context));
 	}
 
-	public static DropStore getDropStore(Context c) {
-		if (store == null) {
-			store = new DropStore(c);
-		}
-		return store;
+	public static DropStore initialize(Context context) {
+		if (instance == null)
+			instance = new DropStore(context);
+		return instance;
 	}
 
-	public static DropStore getDropStore() {
-		return store;
+	public static DropStore getInstance() {
+		return instance;
 	}
 
-	public List<Drop> getDrops() {
+	public List<Drop> getDropList() {
+		if (drops == null)
+			drops = new ArrayList<Drop>();
+		this.updateActiveDropsList();
 		return drops;
 	}
 
-	public static double getRadius() {
-		try {
-			return store.api.getRadius();
-		} catch (Exception e) {
-			Log.e("DropStore", "Could not get radius");
-			return -1;
+	public boolean refreshCache(Location location) {
+		if (location == null) {
+			return false;
 		}
-	}
-
-	public boolean updateGeofences(Location loc) {
+		double radius = 0;
+		Map<Integer, Drop> newAllDrops;
 		try {
-			double radius = 15;
-			
-			Map<Integer, Drop> newDrops = api.getHotdrops(loc.getLatitude(),
-					loc.getLongitude(), radius);
-			Log.w("Drops", "is :" + newDrops.size());
-
-//			// get inactive drop ids for geofence removal
-//			if (allDrops != null && allDrops.keySet() != null) {
-//				Set<Integer> iKey = allDrops.keySet();
-//				iKey.removeAll(newDrops.keySet());
-//
-//				List<String> sKey = new ArrayList<String>();
-//				for (Integer i : iKey) {
-//					sKey.add(String.valueOf(i));
-//				}
-//				if (sKey != null && !sKey.isEmpty())
-//				SyncService.lClient.removeGeofences(sKey, store.listener);
-//			}
-//			List<Geofence> geofences = new ArrayList<Geofence>();
-//			for (Drop d : newDrops.values()) {
-//				Geofence fence = d.toGeofense();
-//				Log.w("Geofence", "AttemptAdd");
-//				geofences.add(fence);
-//			}
-//			if (geofences != null && geofences.size() > 0)
-//			SyncService.lClient
-//					.addGeofences(geofences, pIntent, store.listener);
-			for (Drop d : newDrops.values()){
-				allDrops.put(d.getId(), d);
-			}
-			return true;
+			radius = api.getRadius();
+			Map<Integer, Drop> oldAllDrops = allDrops;
+			newAllDrops = api.getHotdrops(location.getLatitude(),
+					location.getLongitude(), 25);
 		} catch (Exception e) {
-			e.printStackTrace();
 			return false;
 		}
 
-	}
-	
-
-	private Drop getDrop(int id) {
-		Drop d = allDrops.get(id);
-		return d;
-	}
-	
-	public void evaluateLocation(Location l) {
-		if (store.allDrops == null) return;
-		
-		ArrayList<Drop> activatedDrops = new ArrayList<Drop>();
-		for (Drop d : store.allDrops.values()) {
-			if (d.getLocation().distanceTo(l) <= radius) {
-				activatedDrops.add(d);
+		newActiveDrops = new HashMap<Integer, Drop>();
+		for (Drop drop : newAllDrops.values()) {
+			if (drop.getLocation().distanceTo(location) <= radius * 1000) {
+				newActiveDrops.put(drop.getId(), drop);
 			}
 		}
-		store.drops = activatedDrops;
+		Log.e("New Active", "Drops" + newActiveDrops.size());
+
+		if (equalMaps(activeDrops, newActiveDrops))
+			return false;
+		else {
+			activeDrops = newActiveDrops;
+			return true;
+		}
 	}
-	
-	public void handleGeofence(String idIn) {
-		int id = Integer.parseInt(idIn);
-		Iterator<Drop> i = store.drops.iterator();
-		boolean found = false;
-		while (i.hasNext()) {
-			Drop d = i.next();
-			if (d.getId() == id) {
-				found = true;
-				break;
+
+	public boolean isNewDrop() {
+		int i = 0;
+		for (Integer k : newActiveDrops.keySet()) {
+			if (activeDrops.containsKey(k))
+				i += 1;
+		}
+		activeDrops = newActiveDrops;
+		if (i != newActiveDrops.keySet().size())
+			return true;
+		return false;
+	}
+
+	public boolean equalMaps(Map<Integer, Drop> a, Map<Integer, Drop> b) {
+		if (a.size() != b.size())
+			return false;
+		for (Integer k : a.keySet()) {
+			if (!(b.containsKey(k)))
+				return false;
+		}
+		return true;
+	}
+
+	public Map<Integer, Drop> getActiveDrops() {
+		return activeDrops;
+	}
+
+	public void updateActiveDropsList() {
+		ArrayList<Drop> dropList = new ArrayList<Drop>();
+
+		for (Drop drop : activeDrops.values()) {
+			dropList.add(drop);
+		}
+		Collections.sort(dropList, new Comparator<Drop>() {
+
+			@Override
+			public int compare(Drop arg0, Drop arg1) {
+				return -arg0.getCreatedAt().compareTo(arg1.getCreatedAt());
 			}
-		}
-		if (!found) {
-			store.drops.add(getDrop(id));
-			Log.e("AddedDrop", "ID: " + id);
-		}
+
+		});
+		Log.e("Drop List", "Length: " + activeDrops.size());
+		drops.clear();
+		drops.addAll(dropList);
 	}
 
-	public static Drop getNextOutgoing() {
-		return store.outgoingQueue.remove(0);
-	}
-
-	public static boolean addOutgoing(Drop d) {
-		return store.outgoingQueue.add(d);
-	}
-
-	public static void post(Drop newDrop) throws IOException, JSONException {
-		store.api.setHotdrop(newDrop.getLatitude(), newDrop.getLatitude(),
-				newDrop.getMessage());
-		store.drops.add(newDrop);
-		Feed.adapter.notifyDataSetChanged();
-
+	public Map<Integer, Drop> getAllDrops() {
+		return allDrops;
 	}
 
 }

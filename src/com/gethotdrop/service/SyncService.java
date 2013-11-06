@@ -36,7 +36,7 @@ public class SyncService extends Service {
 		lClient.connect();
 		
 		// Use high accuracy
-		dStore = DropStore.getDropStore(this);
+		dStore = DropStore.initialize(this);
 		mHandler = new Handler();
 		this.startRepeatingTask();
 		return Service.START_STICKY;

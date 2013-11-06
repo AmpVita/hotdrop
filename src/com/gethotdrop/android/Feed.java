@@ -63,8 +63,8 @@ public class Feed extends Activity {
 
 		//Get drops and start service
 		startService(new Intent(this, SyncService.class));
-		DropStore dStore = DropStore.getDropStore(this);
-		drops = dStore.getDrops();
+		DropStore dStore = DropStore.initialize(this);
+		drops = dStore.getDropList();
 		Log.e("Drops", "Number of is " + drops.size());
 
 		//Create DropAdapter / ListView
