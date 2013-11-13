@@ -58,5 +58,31 @@ public class Worker extends IntentService {
 			Log.e("Worker: updateLocation", "Provider not connected");
 
 	}
+	
+//	public void createNotification() {
+//        // Prepare intent which is triggered if the
+//        // notification is selected
+//        Intent intent = new Intent(this, Feed.class);
+//        PendingIntent pIntent = PendingIntent.getActivity(this, 0, intent, 0);
+//
+//        // Build notification
+//        Notification noti = new Notification.Builder(this)
+//                        .setContentTitle("Discovered Hotdrop")
+//                        .setContentText("You have a new drop!").setSmallIcon(R.drawable.ic_launcher)
+//                        .setContentIntent(pIntent).getNotification();
+//        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+//        
+//        // Hide the notification after its selected
+//        noti.flags |= Notification.FLAG_AUTO_CANCEL;
+//
+//        //Launch notification
+//        notificationManager.notify(0, noti);
+//        
+//        //Get Vibrator service
+//        Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+//        
+//        // Vibrate for 300 milliseconds
+//        v.vibrate(300);
+//	}
 
 }

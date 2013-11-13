@@ -1,14 +1,10 @@
 package com.gethotdrop.android;
 
-import java.io.IOException;
 import java.util.List;
-
-import org.json.JSONException;
 
 import com.gethotdrop.hotdrop.R;
 import com.gethotdrop.service.DropStore;
 import com.gethotdrop.service.SyncService;
-import com.gethotdrop.service.Worker;
 //import com.gethotdrop.service.SyncService;
 import com.gethotdrop.api.*;
 
@@ -16,11 +12,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.app.Activity;
-import android.content.BroadcastReceiver;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -69,7 +62,7 @@ public class Feed extends Activity {
 
 		//Create DropAdapter / ListView
 		//TODO: think about lifecycle of adapter and the app
-		adapter = new DropAdapter(this, R.layout.card, drops);
+		adapter = new DropAdapter(this, R.layout.listcard, drops);
 		list = (ListView) findViewById(R.id.list);
 		
 		//Create view for image / edittext for note

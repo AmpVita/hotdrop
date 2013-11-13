@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/grayLighter" >
+
+    <RelativeLayout
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/marginMain"
+        android:layout_marginBottom="-12dp"
+        android:layout_marginLeft="@dimen/marginMain"
+        android:layout_marginRight="@dimen/marginMain"
+        android:layout_marginTop="@dimen/marginMain"
+        android:background="@color/yellow" >
+
+    </RelativeLayout>
+    
+    <LinearLayout
+        style="@style/CardBase"
+        android:layout_below="@+id/header"
+        android:layout_margin="@dimen/marginMain" >
+
+        <com.gethotdrop.android.FitToWidthView
+            android:id="@+id/image"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="@dimen/marginMain"
+            android:scaleType="centerCrop"
+            android:src="@drawable/placeholderimage" />
+
+        <TextView
+            android:id="@+id/note"
+            style="@style/TextMedium"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/example_card_note"
+            android:textSize="18sp" />
+
+        <View
+            android:id="@+id/separator"
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:layout_marginBottom="@dimen/marginSmall"
+            android:layout_marginTop="@dimen/marginSmall"
+            android:background="@color/grayLighter"
+            android:visibility="visible" />
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/white" >
+
+            <TextView
+                android:id="@+id/score"
+                style="@style/BlueText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:text="@string/example_score" />
+
+            <TextView
+                android:id="@+id/timestamp"
+                style="@style/TextMicro"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:text="@string/example_time_stamp"
+                android:textColor="@color/gray" />
+        </RelativeLayout>
+    </LinearLayout>
+
+</RelativeLayout>
