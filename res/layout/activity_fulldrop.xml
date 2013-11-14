@@ -72,13 +72,33 @@
 
         </RelativeLayout>
         
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical" >
 
+                <EditText
+		            android:id="@+id/comment"
+		            style="@style/TextMedium"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:background="@color/white"
+		            android:hint="@string/comment_hint"
+		            android:padding="@dimen/marginMain" >
+		
+		            <requestFocus />
+		        </EditText>
+
+                <ImageButton
+                    android:id="@+id/comment_submit"
+                    style="@style/ButtonStyle"
+                    android:layout_alignParentRight="true"
+                    android:layout_toRightOf="@id/comment"
+                    android:src="@drawable/ic_action_send" />
+                
                 <ListView
-                    android:id="@+id/list"
+                    android:id="@+id/comment_list"
+        			android:layout_below="@+id/comment"
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
                     android:clipToPadding="false"
@@ -86,7 +106,7 @@
                     android:dividerHeight="@dimen/marginSmall" >
                 </ListView>
             
-            </LinearLayout>
+            </RelativeLayout>
         
     </LinearLayout>
 

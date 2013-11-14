@@ -17,8 +17,9 @@
     
     <string name="hello_world">Hello world!</string>
     <string name="hint">New drop...</string>
+    <string name="comment_hint">Leave a comment...</string>
 	<string name="example_card_note">lalalalalal I am text</string>
-	<string name="example_time_stamp">2 days ago</string>
+	<string name="example_time_stamp">just now</string>
     <string name="example_score">+42</string>
        
 </resources>

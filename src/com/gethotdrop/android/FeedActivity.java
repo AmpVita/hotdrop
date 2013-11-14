@@ -61,7 +61,6 @@ public class FeedActivity extends Activity {
 		Log.e("Drops", "Number of is " + drops.size());
 
 		//Create DropAdapter / ListView
-		//TODO: think about lifecycle of adapter and the app
 		adapter = new DropAdapter(this, R.layout.listcard, drops);
 		list = (ListView) findViewById(R.id.list);
 		
@@ -75,59 +74,7 @@ public class FeedActivity extends Activity {
 		//Create layout that wraps buttons buttons
 		postButtons = (RelativeLayout) findViewById(R.id.postButtons);
 		
-		//TODO: think about listeners combining
-		//START LISTENER FOR NOTE EDITTEXT
-		postNote.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				postButtons.setBackgroundResource(R.color.blue);
-			}
-		});
-		//END LISTENER FOR NOTE EDITTEXT
-		
-		//START LIST CONFIGURATION
-		list.setOnItemClickListener(new OnItemClickListener() {
-			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
-					long arg3) {
-				imm.hideSoftInputFromWindow(list.getWindowToken(), 0);
-				//postButtons.setBackgroundResource(R.color.grayLight);
-				Intent intent = new Intent(getBaseContext(), DropActivity.class);
-				intent.putExtra("index", arg3);
-				startActivity(intent);
-			}
-		});
-		list.setOverScrollMode(ListView.OVER_SCROLL_ALWAYS);
-		
-		list.setOnScrollListener(new OnScrollListener() {
-			boolean atTop = true;
-			
-			@Override
-			public void onScrollStateChanged(AbsListView view, int scrollState) {
-				imm.hideSoftInputFromWindow(list.getWindowToken(), 0);
-				//postButtons.setBackgroundResource(R.color.grayLight);
-			}
- 
-			@Override
-			public void onScroll(AbsListView view, int firstVisibleItem,
-					int visibleItemCount, int totalItemCount) {
-				if (visibleItemCount > 0) {
-					View firstView = view.getChildAt(0);
-					if ((firstVisibleItem == 0) && (firstView.getTop() >= 0) && !atTop) {
-					//	atTop = true;
-					//	slideDown(postButtons);
-					} else if (firstView.getTop() < 0){
-					//	atTop = false;
-					//	slideUp(postButtons);
-					} 
-				}
-			}
-		});
-		Log.e("list count", "items" + adapter.getCount());
-		list.setAdapter(adapter); // TODO: ADAPTER SET AT END OF LISTENER
-		//END LIST CONFIGURATION
-		
-		//START BUTTON LISTENERS		
+		//LISTENERS		
 		final ImageButton postButton = (ImageButton) findViewById(R.id.postButton);
 		final ImageButton uploadButton = (ImageButton) findViewById(R.id.uploadButton);
 		final ImageButton cameraButton = (ImageButton) findViewById(R.id.cameraButton);
@@ -188,8 +135,44 @@ public class FeedActivity extends Activity {
 //		            intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
 //		            startActivityForResult(intent, 0);
 			}
+		});		
+		
+		//LIST CONFIGURATION
+		list.setOnItemClickListener(new OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+					long arg3) {
+				imm.hideSoftInputFromWindow(list.getWindowToken(), 0);
+				//postButtons.setBackgroundResource(R.color.grayLight);
+				Intent intent = new Intent(getBaseContext(), DropActivity.class);
+				intent.putExtra("index", arg3);
+				startActivity(intent);
+			}
 		});
-		//END BUTTON LISTENERS		
+		list.setOverScrollMode(ListView.OVER_SCROLL_ALWAYS);
+		
+		list.setOnScrollListener(new OnScrollListener() {		
+			@Override
+			public void onScrollStateChanged(AbsListView view, int scrollState) {
+				imm.hideSoftInputFromWindow(list.getWindowToken(), 0);
+				//postButtons.setBackgroundResource(R.color.grayLight);
+			}
+ 
+			@Override
+			public void onScroll(AbsListView view, int firstVisibleItem,
+					int visibleItemCount, int totalItemCount) {
+				if (visibleItemCount > 0) {
+					View firstView = view.getChildAt(0);
+					if ((firstVisibleItem == 0) && (firstView.getTop() >= 0)) { //&& !atTop) {
+					//	slideDown(postButtons);
+					} else if (firstView.getTop() < 0){
+					//	slideUp(postButtons);
+					} 
+				}
+			}
+		});
+		Log.e("list count", "items" + adapter.getCount());
+		list.setAdapter(adapter); // TODO: ADAPTER SET AT END OF LISTENER
 	}
 	
 	// To animate view slide out from bottom to top
@@ -280,3 +263,11 @@ public class FeedActivity extends Activity {
 	}
 	
 }
+
+//Make buttons blue on click
+//postNote.setOnClickListener(new OnClickListener() {
+//@Override
+//public void onClick(View v) {
+//	postButtons.setBackgroundResource(R.color.blue);
+//}
+//});
