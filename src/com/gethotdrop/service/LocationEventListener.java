@@ -11,7 +11,7 @@ import android.os.Bundle;
 import android.text.format.Time;
 import android.util.Log;
 
-import com.gethotdrop.android.Feed;
+import com.gethotdrop.android.FeedActivity;
 import com.gethotdrop.api.Drop;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesClient;

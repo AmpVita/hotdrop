@@ -35,17 +35,28 @@
             <item name="android:padding">@dimen/marginMain</item>
     </style>
     
+    <!--  Separator Styles -->
+    <style name="SeparatorStyle" parent="AppTheme">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">1dp</item>
+       	<item name="android:layout_alignParentLeft">true</item>
+    	<item name="android:layout_marginBottom">@dimen/marginMain</item>
+    	<item name="android:layout_marginTop">@dimen/marginMain</item>
+        <item name="android:background">@color/grayLighter</item>
+        <item name="android:visibility">visible</item>
+    </style>
+    
     <!--  Text Styles -->
     <style name="RobotoLight" parent="AppTheme">
         <item name="android:fontFamily">sans-serif-light</item> 
     </style>
     
    	<style name="TextMedium" parent="RobotoLight">
-		<item name="android:textSize">18sp</item> 
+		<item name="android:textSize">22sp</item> 
     </style>
     
    	<style name="TextMicro" parent="RobotoLight">
-		<item name="android:textSize">12sp</item>
+		<item name="android:textSize">14sp</item>
     </style>
     
     <style name="BlueText" parent="TextMicro">

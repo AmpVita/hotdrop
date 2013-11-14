@@ -7,7 +7,7 @@ import java.util.List;
 
 import org.json.JSONException;
 
-import com.gethotdrop.android.Feed;
+import com.gethotdrop.android.FeedActivity;
 import com.gethotdrop.api.Drop;
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.LocationClient;

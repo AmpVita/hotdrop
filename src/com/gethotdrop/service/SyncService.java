@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-import com.gethotdrop.android.Feed;
+import com.gethotdrop.android.FeedActivity;
 import com.gethotdrop.api.Drop;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesClient;
@@ -59,7 +59,7 @@ public class SyncService extends Service {
 			Intent i = new Intent(c, Worker.class);
 			i.putExtra("action", 0); // updating lists of drops
             c.startService(i); 
-            Feed.updateDrops();
+            FeedActivity.updateDrops();
 			mHandler.postDelayed(mStatusChecker, mInterval);
 		}
 	};

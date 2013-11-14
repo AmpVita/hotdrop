@@ -28,8 +28,7 @@
             android:background="@color/white"
             android:hint="@string/hint"
             android:padding="@dimen/marginMain"
-            android:textCursorDrawable="@null"
-            android:textSize="18sp" >
+            android:textCursorDrawable="@null" >
 
             <requestFocus />
         </EditText>

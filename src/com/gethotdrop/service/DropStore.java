@@ -20,7 +20,7 @@ import android.content.Intent;
 import android.location.Location;
 import android.util.Log;
 
-import com.gethotdrop.android.Feed;
+import com.gethotdrop.android.FeedActivity;
 import com.gethotdrop.api.Api;
 import com.gethotdrop.api.Drop;
 import com.google.android.gms.location.Geofence;

@@ -200,31 +200,35 @@ containing a value of this type.
         public static final int placeholderimage=0x7f020021;
     }
     public static final class id {
-        public static final int action_settings=0x7f050014;
-        public static final int buttonView=0x7f050013;
+        public static final int action_settings=0x7f050018;
         public static final int cameraButton=0x7f050009;
+        public static final int fullimage=0x7f05000e;
+        public static final int fullnote=0x7f05000f;
+        public static final int fullscore=0x7f050011;
+        public static final int fulltimestamp=0x7f050012;
         public static final int header=0x7f05000d;
         public static final int hybrid=0x7f050004;
-        public static final int image=0x7f05000e;
+        public static final int image=0x7f050014;
         public static final int list=0x7f05000c;
         public static final int none=0x7f050000;
         public static final int normal=0x7f050001;
-        public static final int note=0x7f05000f;
+        public static final int note=0x7f050015;
         public static final int postButton=0x7f05000b;
         public static final int postButtons=0x7f050008;
         public static final int postHolder=0x7f050005;
         public static final int postImage=0x7f050006;
         public static final int postNote=0x7f050007;
         public static final int satellite=0x7f050002;
-        public static final int score=0x7f050011;
+        public static final int score=0x7f050016;
         public static final int separator=0x7f050010;
+        public static final int separator2=0x7f050013;
         public static final int terrain=0x7f050003;
-        public static final int timestamp=0x7f050012;
+        public static final int timestamp=0x7f050017;
         public static final int uploadButton=0x7f05000a;
     }
     public static final class layout {
         public static final int activity_feed=0x7f030000;
-        public static final int fullcard=0x7f030001;
+        public static final int activity_fulldrop=0x7f030001;
         public static final int listcard=0x7f030002;
     }
     public static final class menu {
@@ -350,7 +354,7 @@ containing a value of this type.
               <item name="android:background">@color/gray</item> 
          */
         public static final int AppTheme=0x7f080000;
-        public static final int BlueText=0x7f080007;
+        public static final int BlueText=0x7f080008;
         /**   Button Styles 
          */
         public static final int ButtonStyle=0x7f080003;
@@ -359,9 +363,12 @@ containing a value of this type.
         public static final int CardBase=0x7f080002;
         /**   Text Styles 
          */
-        public static final int RobotoLight=0x7f080004;
-        public static final int TextMedium=0x7f080005;
-        public static final int TextMicro=0x7f080006;
+        public static final int RobotoLight=0x7f080005;
+        /**   Separator Styles 
+         */
+        public static final int SeparatorStyle=0x7f080004;
+        public static final int TextMedium=0x7f080006;
+        public static final int TextMicro=0x7f080007;
     }
     public static final class styleable {
         /** Attributes that can be used with a MapAttrs.
