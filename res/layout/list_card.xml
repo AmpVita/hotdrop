@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/CardBase" >
+  
+    <com.gethotdrop.android.FitToWidthView
+        android:id="@+id/image"
+        android:src="@drawable/placeholderimage"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="@dimen/marginMain"
+        android:scaleType="centerCrop" />
+
+     <TextView
+         android:id="@+id/note"
+         style="@style/TextMedium"
+         android:layout_width="fill_parent"
+         android:layout_height="wrap_content"
+         android:text="@string/example_card_note" />
+
+     <View
+         android:id="@+id/separator"
+         style="@style/SeparatorStyle"  />
+     
+     <RelativeLayout
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:background="@color/white" >
+
+         <TextView
+             android:id="@+id/score"
+             style="@style/BlueText"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:layout_alignParentLeft="true"
+             android:layout_centerVertical="true"
+             android:text="@string/example_score" />
+
+         <TextView
+             android:id="@+id/timestamp"  
+	         style="@style/TextMicro"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:layout_alignParentRight="true"
+             android:layout_centerVertical="true"
+             android:text="@string/example_time_stamp"
+             android:textColor="@color/gray" />
+
+     </RelativeLayout>
+</LinearLayout>

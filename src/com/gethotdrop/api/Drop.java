@@ -12,17 +12,19 @@ import android.location.LocationManager;
 public class Drop {
 	private int id;
 	private int userId;
+	private int grabs;
 	private double latitude;
 	private double longitude;
 	public String message;
 	public Bitmap image;
-	private Date createdAt;
+	private String createdAt;
 	private Date updatedAt;
 
-	public Drop(int id, int userId, double latitude, double longitude,
-			String message, Date createdAt, Date updatedAt) {
+	public Drop(int id, int userId, int grabs, double latitude, double longitude,
+			String message, String createdAt, Date updatedAt) {
 		this.id = id;
 		this.userId = userId;
+		this.grabs = grabs;
 		this.latitude = latitude;
 		this.longitude = longitude;
 		this.message = message;
@@ -30,17 +32,11 @@ public class Drop {
 		this.updatedAt = updatedAt;
 	}
 
-	public Drop(String message) {
-		this.message = message;
-	}
-
-	public Drop(Bitmap image) {
-		this.image = image;
-	}
-
-	public Drop(String message, Bitmap image) {
+	public Drop(String message, Bitmap image, String date, int grabs) {
 		this.message = message;
 		this.image = image;
+		this.createdAt = date;
+		this.grabs = grabs;
 	}
 
 	public Bitmap getImage() {
@@ -71,7 +67,7 @@ public class Drop {
 		return message;
 	}
 
-	public Date getCreatedAt() {
+	public String getCreatedAt() {
 		return createdAt;
 	}
 
@@ -97,4 +93,12 @@ public class Drop {
             	.build();
             	
         }
+
+	public int getGrabs() {
+		return grabs;
+	}
+
+	public void setGrabs(int grabs) {
+		this.grabs = grabs;
+	}
 }

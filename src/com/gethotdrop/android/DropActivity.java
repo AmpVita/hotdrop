@@ -21,7 +21,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 public class DropActivity extends Activity {
-	ArrayAdapter<String> convoAdapter;
+	CommentAdapter convoAdapter;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -39,10 +39,12 @@ public class DropActivity extends Activity {
 
        ((TextView)findViewById(R.id.fullnote)).setText(thisDrop.getMessage());
        ((ImageView)findViewById(R.id.fullimage)).setImageBitmap(thisDrop.getImage());
-	
+       ((TextView)findViewById(R.id.fullscore)).setText("+" + thisDrop.getGrabs());
+       ((TextView)findViewById(R.id.fulltimestamp)).setText(thisDrop.getCreatedAt());
+
        final List<String> comments = new ArrayList<String>();
        comments.add("one");
-       convoAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, comments);
+       convoAdapter = new CommentAdapter(this, R.layout.comment_card, comments);
        
        ListView convoList = (ListView) findViewById(R.id.comment_list);
        convoList.setAdapter(convoAdapter); // TODO: ADAPTER SET AT END OF LISTENER

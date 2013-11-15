@@ -39,8 +39,9 @@ public class DropAdapter extends ArrayAdapter<Drop> {
            holder = new CardHolder(); 
            holder.note = (TextView)row.findViewById(R.id.note);
            holder.image = (ImageView)row.findViewById(R.id.image);
+           holder.grabs = (TextView)row.findViewById(R.id.score);
+           holder.timestamp = (TextView)row.findViewById(R.id.timestamp);
            
-           //holder.timestamp = (TextView)row.findViewById(R.id.timestamp);
            row.setTag(holder);
        }
        else
@@ -51,8 +52,8 @@ public class DropAdapter extends ArrayAdapter<Drop> {
        Drop thisDrop = data.get(position);
 
        holder.note.setText(thisDrop.getMessage());
-       //holder.ups.setText("!");
-       //holder.timestamp.setText(thisDrop.getCreatedAt().toString());
+       holder.grabs.setText("+" + thisDrop.getGrabs());
+       holder.timestamp.setText(thisDrop.getCreatedAt());
        //int outImage=R.drawable.ic_camera;
        holder.image.setImageBitmap(thisDrop.getImage());
       return row;
@@ -63,7 +64,7 @@ public class DropAdapter extends ArrayAdapter<Drop> {
    {
        ImageView image;
        TextView note;
-      // TextView timestamp;
-      // TextView ups;
+       TextView timestamp;
+       TextView grabs;
    }
 }

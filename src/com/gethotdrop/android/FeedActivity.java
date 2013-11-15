@@ -1,5 +1,6 @@
 package com.gethotdrop.android;
 
+import java.util.Calendar;
 import java.util.List;
 
 import com.gethotdrop.hotdrop.R;
@@ -61,7 +62,7 @@ public class FeedActivity extends Activity {
 		Log.e("Drops", "Number of is " + drops.size());
 
 		//Create DropAdapter / ListView
-		adapter = new DropAdapter(this, R.layout.listcard, drops);
+		adapter = new DropAdapter(this, R.layout.list_card, drops);
 		list = (ListView) findViewById(R.id.list);
 		
 		//Create view for image / edittext for note
@@ -83,14 +84,12 @@ public class FeedActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				noteText = postNote.getText().toString();
-				Drop newDrop;
-				if (chosenImage != null && !(noteText.equals(""))) {
+				Drop newDrop; //TODO: GIVE THIS NEWDROP REAL DEETSSZZz
+				if (chosenImage != null || !(noteText.equals(""))) {
 					list = (ListView) findViewById(R.id.list);
-					newDrop = new Drop(noteText, chosenImage);
-				} else if (!(noteText.equals(""))) {
-					newDrop = new Drop(noteText);		
-				} else if (chosenImage != null && noteText.equals("")) {
-					newDrop = new Drop(chosenImage);		
+					String mydate = java.text.DateFormat.getDateTimeInstance().format(Calendar.getInstance().getTime());
+					newDrop = new Drop(noteText, chosenImage, mydate, 1);
+					//Api.postDrop("message")		
 				} else {
 					return;
 				}
@@ -122,8 +121,8 @@ public class FeedActivity extends Activity {
 		cameraButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				 Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
-                 startActivityForResult(intent, 0);   
+				 Intent cameraIntent = new Intent("android.media.action.IMAGE_CAPTURE");
+                 startActivityForResult(cameraIntent, 0);   
 
                  //Code snippet for better quality images				
 //				ContentValues values = new ContentValues();
@@ -143,6 +142,7 @@ public class FeedActivity extends Activity {
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long arg3) {
 				imm.hideSoftInputFromWindow(list.getWindowToken(), 0);
+				//TODO: add grabs to drops
 				//postButtons.setBackgroundResource(R.color.grayLight);
 				Intent intent = new Intent(getBaseContext(), DropActivity.class);
 				intent.putExtra("index", arg3);
@@ -233,7 +233,6 @@ public class FeedActivity extends Activity {
 
 		case 1:
 			if (resultCode == Activity.RESULT_OK) {
-				if (resultCode == RESULT_OK) {
 					Uri selectedImage = buttonIntent.getData();
 					String[] filePathColumn = { MediaStore.Images.Media.DATA };
 
@@ -249,7 +248,6 @@ public class FeedActivity extends Activity {
 					optsDownSample.inSampleSize = 8;
 
 					chosenImage = BitmapFactory.decodeFile(filePath, optsDownSample);
-				}
 			}
 			break;
 		}

@@ -1,31 +1,17 @@
 package com.gethotdrop.service;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Queue;
-import java.util.Set;
-import java.util.Vector;
-
-import org.json.JSONException;
-
-import android.app.PendingIntent;
 import android.content.Context;
-import android.content.Intent;
 import android.location.Location;
 import android.util.Log;
 
-import com.gethotdrop.android.FeedActivity;
 import com.gethotdrop.api.Api;
 import com.gethotdrop.api.Drop;
-import com.google.android.gms.location.Geofence;
-import com.google.android.gms.location.LocationClient.OnAddGeofencesResultListener;
-import com.google.android.gms.location.LocationClient.OnRemoveGeofencesResultListener;
 
 /* 
  * Two types of drop lists, active and aware of
@@ -34,8 +20,6 @@ import com.google.android.gms.location.LocationClient.OnRemoveGeofencesResultLis
  * 
  * Passive - needs to coordinate with geofence
  *
- * 
- * 
  */
 
 public class DropStore {
@@ -93,7 +77,7 @@ public class DropStore {
 		Log.e("New Active", "Drops" + newActiveDrops.size());
 
 		if (equalMaps(activeDrops, newActiveDrops))
-			return false;
+			return false; // false if they didn't change
 		else {
 			activeDrops = newActiveDrops;
 			return true;
