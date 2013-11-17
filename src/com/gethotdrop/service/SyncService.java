@@ -1,24 +1,12 @@
 package com.gethotdrop.service;
 
-import java.util.ArrayList;
-import java.util.List;
-
-
 import com.gethotdrop.android.FeedActivity;
-import com.gethotdrop.api.Drop;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesClient;
 import com.google.android.gms.location.LocationClient;
-import com.google.android.gms.location.LocationRequest;
-
-import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
-import android.util.Log;
 
 public class SyncService extends Service {
 	public static LocationClient lClient;

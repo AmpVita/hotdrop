@@ -24,7 +24,7 @@ import com.gethotdrop.api.Drop;
 
 public class DropStore {
 	private ArrayList<Drop> drops;
-	private Api api;
+	
 	private Map<Integer, Drop> activeDrops = new HashMap<Integer, Drop>();
 	private Map<Integer, Drop> allDrops = new HashMap<Integer, Drop>();
 
@@ -32,9 +32,7 @@ public class DropStore {
 
 	private static DropStore instance = null;
 
-	protected DropStore(Context context) {
-		api = new Api(UniqueIdentifier.id(context));
-	}
+	protected DropStore(Context context) { }
 
 	public static DropStore initialize(Context context) {
 		if (instance == null)
@@ -60,10 +58,10 @@ public class DropStore {
 		double radius = 0;
 		Map<Integer, Drop> newAllDrops;
 		try {
-			radius = api.getRadius();
+			radius = 25; //api.getRadius();
 			Map<Integer, Drop> oldAllDrops = allDrops;
-			newAllDrops = api.getHotdrops(location.getLatitude(),
-					location.getLongitude(), 25);
+			newAllDrops = Api.getHotdrops(location.getLatitude(),
+					location.getLongitude());
 		} catch (Exception e) {
 			return false;
 		}

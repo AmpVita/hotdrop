@@ -6,6 +6,7 @@ import java.util.List;
 import com.gethotdrop.hotdrop.R;
 import com.gethotdrop.service.DropStore;
 import com.gethotdrop.service.SyncService;
+import com.gethotdrop.service.Worker;
 //import com.gethotdrop.service.SyncService;
 import com.gethotdrop.api.*;
 
@@ -88,17 +89,20 @@ public class FeedActivity extends Activity {
 				if (chosenImage != null || !(noteText.equals(""))) {
 					list = (ListView) findViewById(R.id.list);
 					String mydate = java.text.DateFormat.getDateTimeInstance().format(Calendar.getInstance().getTime());
-					newDrop = new Drop(noteText, chosenImage, mydate, 1);
-					//Api.postDrop("message")		
+					newDrop = new Drop(noteText, chosenImage, mydate, 1);		
 				} else {
 					return;
 				}
 				
-				/*Log.e("newdrop is", newDrop.message);
-				DropStore.addOutgoing(newDrop);
-				Intent i = new Intent(c, Worker.class);
-				i.putExtra("action", 2);
-                c.startService(i);*/
+				// Log.e("newdrop is", newDrop.message);
+
+				Intent postIntent = new Intent(c, Worker.class);
+				postIntent.putExtra("action", 1);
+				postIntent.putExtra("message", noteText);
+				startService(postIntent);
+				// Api.postDrop("message")
+				// DropStore.addOutgoing(newDrop);
+				
 				drops.add(newDrop);
 				adapter.notifyDataSetChanged();
 					
@@ -254,12 +258,12 @@ public class FeedActivity extends Activity {
 		postImage.setImageBitmap(chosenImage);
 		postImage.setVisibility(View.VISIBLE);
 	}
+	
 	public static void updateDrops() {
 		if (adapter != null)
 		adapter.notifyDataSetChanged();
 		Log.d("adapter", "refresh");
 	}
-	
 }
 
 //Make buttons blue on click

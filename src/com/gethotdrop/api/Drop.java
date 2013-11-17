@@ -12,24 +12,24 @@ import android.location.LocationManager;
 public class Drop {
 	private int id;
 	private int userId;
-	private int grabs;
 	private double latitude;
 	private double longitude;
 	public String message;
 	public Bitmap image;
 	private String createdAt;
 	private Date updatedAt;
+	private int grabs;
 
-	public Drop(int id, int userId, int grabs, double latitude, double longitude,
-			String message, String createdAt, Date updatedAt) {
+	public Drop(int id, double latitude, double longitude, // int userId
+			String message, String createdAt, Date updatedAt, int grabs) {
 		this.id = id;
-		this.userId = userId;
-		this.grabs = grabs;
+		//this.userId = userId;
 		this.latitude = latitude;
 		this.longitude = longitude;
 		this.message = message;
 		this.createdAt = createdAt;
 		this.updatedAt = updatedAt;
+		this.grabs = grabs;
 	}
 
 	public Drop(String message, Bitmap image, String date, int grabs) {

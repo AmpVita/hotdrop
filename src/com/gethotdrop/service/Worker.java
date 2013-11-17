@@ -8,6 +8,7 @@ import java.util.List;
 import org.json.JSONException;
 
 import com.gethotdrop.android.FeedActivity;
+import com.gethotdrop.api.Api;
 import com.gethotdrop.api.Drop;
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.LocationClient;
@@ -27,8 +28,12 @@ public class Worker extends IntentService {
 	protected void onHandleIntent(Intent intent) {
 		switch (intent.getIntExtra("action", 0)) {
 		// location update
-		case 0:
+		case 0: //update location
 			updateLocation(intent);
+			break;
+		case 1: //post drop
+			String message = intent.getStringExtra("message");
+			postDrop(message);
 			break;
 		}
 
@@ -56,7 +61,31 @@ public class Worker extends IntentService {
 				Log.e("Worker: updateLocation", "Location was null");
 		} else
 			Log.e("Worker: updateLocation", "Provider not connected");
-
+	}
+	
+	private void postDrop(String message) {
+		if (SyncService.lClient.isConnected()) {
+			Location loc = SyncService.lClient.getLastLocation();
+			if (loc != null) {
+				//if (loc.getAccuracy() < 400) {
+					Log.v("Worker: postDrop", "Loc: " + loc.getLatitude()
+							+ ", " + loc.getLongitude());
+						
+						try {
+							Api.setHotdrop(loc.getLatitude(), loc.getLongitude(), message);
+						} catch (IOException e) {
+							Log.e("Worker: postDrop", "API IO Exception");
+						} catch (JSONException e) {
+							Log.e("Worker: postDrop", "API JSON Exception");
+						}
+					
+				//	} else
+				//	Log.e("Worker: updateLocation",
+				//			"Accuracy too low: " + loc.getAccuracy());
+			} else
+				Log.e("Worker: postDrop", "Location was null");
+		} else
+			Log.e("Worker: postDrop", "Provider not connected");
 	}
 	
 //	public void createNotification() {

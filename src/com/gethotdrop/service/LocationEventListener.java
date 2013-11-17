@@ -1,21 +1,13 @@
 package com.gethotdrop.service;
 
-import java.util.Date;
-
 import android.app.PendingIntent;
-import android.app.PendingIntent.CanceledException;
 import android.content.Context;
-import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
-import android.text.format.Time;
 import android.util.Log;
 
-import com.gethotdrop.android.FeedActivity;
-import com.gethotdrop.api.Drop;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesClient;
-import com.google.android.gms.internal.l;
 import com.google.android.gms.location.LocationClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
