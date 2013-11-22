@@ -55,7 +55,7 @@ public class Worker extends IntentService {
 					} else
 						Log.e("Worker: updateLocation", "Drop Store Failed");
 				} else
-					Log.e("Worker: updateLocation",
+					Log.i("Worker: updateLocation",
 							"Accuracy too low: " + loc.getAccuracy());
 			} else
 				Log.e("Worker: updateLocation", "Location was null");
@@ -72,6 +72,7 @@ public class Worker extends IntentService {
 							+ ", " + loc.getLongitude());
 						
 						try {
+							Log.e("enter", "enter");
 							Api.setHotdrop(loc.getLatitude(), loc.getLongitude(), message);
 						} catch (IOException e) {
 							Log.e("Worker: postDrop", "API IO Exception");

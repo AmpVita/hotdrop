@@ -16,15 +16,17 @@ import java.util.Map;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.util.Log;
+
 public class Api {
         
 		//GET + SET DROPS
-        final static private String SERVER_URL = "http://google.com/api/";
+        final static private String SERVER_URL = "http://ec2-54-234-23-75.compute-1.amazonaws.com:8000/api/";
         
         //final private String HOTDROP_GET_RADIUS = "hotdrop/getRadius";
         //final private String USER_GET_ID = "user/getId";
-        final static private String HOTDROP_GET = "hotdrop/get";
-        final static private String HOTDROP_SET = "hotdrop/set";
+        final static private String HOTDROP_GET = "drops/";
+        final static private String HOTDROP_SET = "drops/create";
         
         //device id method store in service (singleton)
         //intent in worker to update things
@@ -35,17 +37,15 @@ public class Api {
         final static private String CHARSET = "UTF-8";
 
         public static Map<Integer, Drop> getHotdrops(double latitude_current, double longitude_current) throws IOException, JSONException {
-                String url = SERVER_URL + HOTDROP_GET;
+        		String url = SERVER_URL + HOTDROP_GET;
                 String query;
-                query = String.format("latitude=%f&longitude=%f"
-                                , latitude_current
-                                , longitude_current);
+                query = String.format("");
 
                 Map<Integer, Drop> hotdrops = new HashMap<Integer, Drop>();
                 
-                JSONObject json = new JSONObject(getRequest(url, query));
-                JSONObject jsonHotdrops = json.getJSONObject("hotdrops");
-                
+                JSONObject jsonHotdrops = new JSONObject(getRequest(url, query));
+                Log.e("getHotdrop", "length: " + jsonHotdrops.length());
+
                 Iterator<String> i = jsonHotdrops.keys();
                 
                 while (i.hasNext()) {
@@ -53,11 +53,11 @@ public class Api {
                         JSONObject jsonHotdrop = jsonHotdrops.getJSONObject(key.toString());
                         int id = jsonHotdrop.getInt("id");
                         //int userId = jsonHotdrop.getInt("user_id");
-                        double latitude = jsonHotdrop.getDouble("latitude");
-                        double longitude = jsonHotdrop.getDouble("longitude");
+                        double latitude = jsonHotdrop.getDouble("lat");
+                        double longitude = jsonHotdrop.getDouble("lng");
                         String message = jsonHotdrop.getString("message");
-                        String createdAt = Long.toString(jsonHotdrop.getLong("created_at") * 1000); 
-                        Date updatedAt = new Date(jsonHotdrop.getLong("updated_at") * 1000);
+                        String createdAt = Long.toString(jsonHotdrop.getLong("created") * 1000); 
+                        Date updatedAt = new Date(jsonHotdrop.getLong("updated") * 1000);
                         Drop hotdrop = new Drop(id, latitude, longitude, message, createdAt, updatedAt, 1);
                         hotdrops.put(id, hotdrop);
                 }
@@ -68,12 +68,13 @@ public class Api {
         public static Drop setHotdrop(double latitude, double longitude, String message) throws IOException, JSONException {
                 String url = SERVER_URL + HOTDROP_SET;
                 String query;
-                query = String.format("latitude=%f&longitude=%f&message=%s"
+                query = String.format("{\"lat\":%f,\"lng\":%f,\"message\":\"%s\"}"
                                 , latitude
                                 , longitude
                                 , URLEncoder.encode(message, CHARSET));
-                System.out.println(query);
+                Log.e("URL", url);
                 JSONObject json = new JSONObject(postRequest(url, query));
+                Log.e("received text", json.toString());
                 boolean success = json.getBoolean("success");
                 if (success) {
                         JSONObject jsonHotdrop = json.getJSONObject("hotdrop");
@@ -114,7 +115,7 @@ public class Api {
                 URLConnection connection = new URL(url).openConnection();
                 connection.setDoOutput(true);
                 connection.setRequestProperty("Accept-Charset", CHARSET);
-                connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded;charset=" + CHARSET);
+                connection.setRequestProperty("Content-Type", "application/json;charset=" + CHARSET);
                 OutputStream output = null;
                 try {
                      output = connection.getOutputStream(); 
