@@ -27,19 +27,8 @@ public class Data {
 	RequestQueue queue = Volley.newRequestQueue(context);
 
 	public static Map<Integer, Drop> getDrops(double latitude_cur, double longitude_cur) {
-		JSONObject oJson;
-		JsonObjectRequest req = new JsonObjectRequest(Request.Method.GET, BASE + GET_DROPS, oJson, new Response.Listener<JSONObject>()  {
-
-			@Override
-			public void onResponse(JSONObject response) {
-				return new Map<Integer, Drop>() d;				
-			}
-		}, new Response.ErrorListener() {
-			@Override
-			public void onErrorResponse(VolleyError error) {
 		
-			}
-		});
+		return null;
 	
 	}
 	private Data(Service is) {
